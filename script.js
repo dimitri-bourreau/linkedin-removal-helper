@@ -90,7 +90,7 @@ function getRemoveDropdown(connection) {
 	)[0];
 }
 function scrollTo(connection) {
-	return connection.scrollIntoView({
+	return connection.scrollIntoView?.({
 		behavior: 'smooth',
 		block: 'end',
 		inline: 'nearest',
