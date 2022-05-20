@@ -12,7 +12,8 @@ const awaitTime = 200;
 		const listOfConnections = getListOfConnections(document);
 		const connections = getConnectionsFromList(listOfConnections);
 		if (connections.length > 0) {
-			await iterateOverNetwork(connections);
+			const sortedConnections  = removeFromListKeptConnections(connections);
+			await iterateOverNetwork(sortedConnections);
 		} else {
 			stop = true;
 		}
@@ -63,6 +64,10 @@ async function confirmRemoval(connection) {
 
 function keep(connection) {
 	return makeConnectionGreen(connection);
+}
+
+function removeFromListKeptConnections(connections) {
+	return [...connections].filter(connection => connection.style.backgroundColor !== 'green')
 }
 
 /**
