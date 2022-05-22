@@ -4,15 +4,16 @@
 	 * CONFIG
 	 * ---------------------------------
 	 * awaitTime:
-	 * 	 Time in ms to wait for LinkedIn to display a button to remove a connection.
-	 * 	 Used twice.
-	 * 	 LinkedIn can get pretty slow!
-	 * 	 If you regularly have a failure due to an out of reach button: increase awaitTime. 👍
+	 * 	 Temps en ms à attendre que LinkedIn affiche les boutons pour supprimer une relation.
+	 * 	 Utilisé deux fois.
+	 * 	 Parfois LinkedIn est lent, aussi j'imagine que ça varie suivant votre machine.
+	 * 	 Si vous rencontrez plusieurs fois une erreur indiquant ne pas trouver de bouton pour supprimer,
+	 * 	 pensez à indiquer un temps plus long (1000ms = 1s). 👍
 	 * scrollView:
-	 *   You can define where you want to display the connection to be removed.
-	 *   'start': at the top of your screen (not recommended as LinkedIn hides it with its header).
-	 *   'center': at its center.
-	 *   'end': at its bottom.
+	 *   Définit où apparaît l'utilisateur à supprimer sur votre écran.
+	 *   'start': en haut de l'écran (non recommandé, LinkedIn le cachant).
+	 *   'center': au centre.
+	 *   'end': en bas.
 	 */
 	const awaitTime = 400;
 	const scrollView = 'center';
