@@ -13,13 +13,9 @@ https://user-images.githubusercontent.com/32717624/169691952-b5c5e2ae-b8e7-4f84-
   - Cliquez sur `OK` ou appuyez sur `Entrée` pour supprimer une relation.
   - Cliquez sur `Annuler` ou appuyez sur `Esc` pour conserver une relation.
 
-## Erreurs courantes
+## Erreurs
 
-### Le programme s'arrête tout seul et rafraîchit la page.
-
-Pour l'instant le script a ce problème, que je n'ai pas encore identifié précisément.
-
-Je suis dessus, du moins pour le moment il suffit de coller le contenu du script dans la console pour repartir de plus belle !
+Si vous rencontrez une erreur, vous pouvez créer une issue ou, sinon, me contacter sur LinkedIn. ✌️
 
 ## Pourquoi cet outil est en français alors que le titre est en anglais ?
 
