@@ -13,6 +13,10 @@ https://user-images.githubusercontent.com/32717624/169691952-b5c5e2ae-b8e7-4f84-
   - Cliquez sur `OK` ou appuyez sur `Entrée` pour supprimer une relation.
   - Cliquez sur `Annuler` ou appuyez sur `Esc` pour conserver une relation.
 
+Pensez à faire plusieurs passes : malheureusement LinkedIn n'affiche pas toutes les relations quand on fait toute la page de leur liste. 
+
+Quand on rafraîchit, on constate de nouvelles relations (et que d'autres ont disparu). Par exemple, en supprimant près de 2000 relations, j'ai dut faire une dizaine de passes. M'enfin, je vais pas faire mon surpris, LinkedIn a d'autres défauts.
+
 ## Erreurs
 
 Si vous rencontrez une erreur, vous pouvez créer une issue ou, sinon, me contacter sur LinkedIn. ✌️
