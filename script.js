@@ -71,14 +71,16 @@
 	let newConnectionsToRemove = true;
 	while (newConnectionsToRemove) {
 		const connections = getDisplayedConnections(document);
-		if (!connections) return newConnectionsToRemove = false;
 		const sortedConnections  = removeFromListKeptConnections(connections);
-		if (!sortedConnections.length === 0) return newConnectionsToRemove = false;
-		try {
-			await iterateOverNetwork(sortedConnections);
-		} catch(error) {
+		if (sortedConnections.length === 0) {
 			newConnectionsToRemove = false;
-			return handleError(error);
+		} else {
+			try {
+				await iterateOverNetwork(sortedConnections);
+			} catch(error) {
+				newConnectionsToRemove = false;
+				return handleError(error);
+			}
 		}
 	}
 
@@ -221,7 +223,6 @@
 				return span;
 			}
 		}
-		console.error(ERR_CAN_T_FIND_REMOVE_BUTTON, connection);
 		throw(ERR_CAN_T_FIND_REMOVE_BUTTON);
 	}
 	function getRemoveConfirmModal(document) {
