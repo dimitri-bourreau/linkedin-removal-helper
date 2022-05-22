@@ -73,6 +73,7 @@
 		const connections = getDisplayedConnections(document);
 		if (!connections) return newConnectionsToRemove = false;
 		const sortedConnections  = removeFromListKeptConnections(connections);
+		if (!sortedConnections.length === 0) return newConnectionsToRemove = false;
 		try {
 			await iterateOverNetwork(sortedConnections);
 		} catch(error) {
