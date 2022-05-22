@@ -4,12 +4,18 @@
 	 * CONFIG
 	 * ---------------------------------
 	 * awaitTime:
-	 * 	Time in ms to wait for LinkedIn to display a button to remove a connection.
-	 * 	Used twice.
-	 * 	LinkedIn can get pretty slow!
-	 * 	If you regularly have a failure due to an out of reach button: increase awaitTime. 👍
+	 * 	 Time in ms to wait for LinkedIn to display a button to remove a connection.
+	 * 	 Used twice.
+	 * 	 LinkedIn can get pretty slow!
+	 * 	 If you regularly have a failure due to an out of reach button: increase awaitTime. 👍
+	 * scrollView:
+	 *   You can define where you want to display the connection to be removed.
+	 *   'start': at the top of your screen (not recommended as LinkedIn hides it with its header).
+	 *   'center': at its center.
+	 *   'end': at its bottom.
 	 */
-	const awaitTime = 200;
+	const awaitTime = 400;
+	const scrollView = 'center';
 
 	const listClassName = 'scaffold-finite-scroll__content';
 	const removeDropdownClassName = 'artdeco-dropdown__trigger--placement-bottom';
@@ -20,6 +26,41 @@
 
 	const ERR_CAN_T_FIND_REMOVE_BUTTON = 'ERR_CAN_T_FIND_REMOVE_BUTTON';
 	const ERR_NO_MODAL = 'ERR_NO_MODAL';
+	const ERR_NO_DROPDOWN = 'ERR_NO_DROPDOWN';
+
+	const MSG_ERR_INTRODUCTION = `
+		------------\n
+		⚠️ ERREUR ⚠️\n
+		------------\n
+	`;
+	const MSG_ERR_OUTRO = `
+		------------\n
+		Merci de copier-coller\n
+		à nouveau le script. ✌️\n
+		------------\n
+	`;
+	const MSG_ERR_CAN_T_FIND_REMOVE_BUTTON = `
+		Impossible de trouver\n
+		automatiquement le\n
+		bouton supprimer.\n\n
+	`;
+	const MSG_ERR_NO_MODAL = `
+		Impossible de trouver\n
+		automatiquement le\n
+		modal pour supprimer\n
+		la relation.\n\n
+	`;
+	const MSG_ERR_NO_DROPDOWN = `
+		Impossible de trouver\n
+		automatiquement le\n
+		menu déroulant pour\n
+		supprimer la relation.\n\n
+	`;
+	const MSG_ERR_UNKNOWN = `
+		Une erreur non gérée\n
+		automatiquement est\n
+		survenue, désolé.\n\n
+	`;
 
 	/**
 	 * ---------------------------------
@@ -66,7 +107,11 @@
 
 	async function remove(connection) {
 		return new Promise((resolve, reject) => {
-				openRemoveDropdown(connection);
+				try {
+					openRemoveDropdown(connection);
+				} catch(error) {
+					return reject(error);
+				}
 				makeConnectionRed(connection);
 				setTimeout(async () => {
 					try {
@@ -102,23 +147,23 @@
 	}
 
 	function removeFromListKeptConnections(connections) {
-		return [...connections].filter(connection => connection.style.backgroundColor !== 'green')
+		return [...connections]
+			.filter(connection => connection.style.backgroundColor !== 'green' && connection.style.backgroundColor !== 'red')
 	}
 
 	function handleError(error) {
-		let refreshAuthorization = false;
 		switch(error) {
 			case ERR_CAN_T_FIND_REMOVE_BUTTON:
-				refreshAuthorization = confirm('Impossible de trouver automatiquement le bouton supprimer, cliquez sur OK pour rafraîchir la page et réessayer. 😊');
-				if (refreshAuthorization) window.location.reload();
+				alert(`${MSG_ERR_INTRODUCTION}${MSG_ERR_CAN_T_FIND_REMOVE_BUTTON}${MSG_ERR_OUTRO}`);
 				break;
 			case ERR_NO_MODAL:
-				refreshAuthorization = confirm('Impossible de trouver automatiquement le modal pour supprimer, cliquez sur OK pour rafraîchir la page et réessayer. 😊');
-				if (refreshAuthorization) window.location.reload();
+				alert(`${MSG_ERR_INTRODUCTION}${MSG_ERR_NO_MODAL}${MSG_ERR_OUTRO}`);
+				break;
+			case ERR_NO_DROPDOWN:
+				alert(`${MSG_ERR_INTRODUCTION}${MSG_ERR_NO_DROPDOWN}${MSG_ERR_OUTRO}`);
 				break;
 			default:
-				refreshAuthorization = confirm('Une erreur non gérée automatiquement est survenue, désolé. Cliquez sur OK pour rafraîchir la page et réessayer !')
-				if (refreshAuthorization) window.location.reload();
+				alert(`${MSG_ERR_INTRODUCTION}${MSG_ERR_NO_MODAL}${MSG_ERR_OUTRO}`)
 		}
 	}
 
@@ -128,23 +173,24 @@
 	 * ---------------------------------
 	 */
 	function getListOfConnections(document) {
-		return document.getElementsByClassName(listClassName)[0];
+		const list = document.getElementsByClassName(listClassName);
+		return list ? list[0] : undefined;
 	}
 	function getConnectionsFromList(list) {
 		return [...list.getElementsByTagName('li')];
 	}
 	function getNameFromConnection(connection) {
-		return connection.getElementsByClassName(peopleNameClassName)[0].innerText;
+		const nameElt = [...connection.getElementsByClassName(peopleNameClassName)];
+		return nameElt[0]?.textContent.trim() || undefined;
 	}
 	function getRemoveDropdown(connection) {
-		return connection.getElementsByClassName(
-			removeDropdownClassName,
-		)[0];
+		const dropdown = connection.getElementsByClassName(removeDropdownClassName);
+		return dropdown ? dropdown[0] : undefined;
 	}
 	function scrollTo(connection) {
 		return connection.scrollIntoView?.({
 			behavior: 'smooth',
-			block: 'end',
+			block: scrollView,
 			inline: 'nearest',
 		});
 	}
@@ -159,10 +205,11 @@
 	}
 	function askToRemove(connection) {
 		const name = getNameFromConnection(connection);
-		return confirm(`Remove ${name}?`);
+		return !name ? null : confirm(`Supprimer votre relation avec ${name} ?`);
 	}
 	function openRemoveDropdown(connection) {
 		const removeDropdown = getRemoveDropdown(connection);
+		if (!removeDropdown) throw ERR_NO_DROPDOWN;
 		return removeDropdown.click();
 	}
 	function getRemoveButton(connection) {
@@ -172,6 +219,7 @@
 				return span;
 			}
 		}
+		console.error(ERR_CAN_T_FIND_REMOVE_BUTTON, connection);
 		throw(ERR_CAN_T_FIND_REMOVE_BUTTON);
 	}
 	function getRemoveConfirmModal(document) {
@@ -192,7 +240,7 @@
 	}
 	function getDisplayedConnections(document) {
 		const listOfConnections = getListOfConnections(document);
-		return getConnectionsFromList(listOfConnections);
+		return listOfConnections ? getConnectionsFromList(listOfConnections) : undefined;
 	}
 })();
 
