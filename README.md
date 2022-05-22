@@ -26,3 +26,5 @@ J'ai créé le projet en anglais, par habitude, avant de réaliser que je m'adre
 J'apprécierais beaucoup d'avoir vos retours sur mon code. ❤️
 
 Note : je ne souhaite pas utiliser de modules pour utiliser un bundler ensuite. J'aime l'idée que les utilisateurs copient et collent quelque chose de compréhensible.
+
+Seconde note : le script a été fait rapidement, ne l'oubliez pas en le lisant. 😁
